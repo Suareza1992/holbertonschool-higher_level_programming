@@ -1,80 +1,75 @@
 #!/usr/bin/python3
-"""Square module.
+"""Singly Linked Lists module.
 
-This module contains a class that defines a square and its size and its
-position on the screen, checking if the given values are right, and a setter
-and getter methods to set or get them. A __str__ method is here to handle the
-use of the builtin print function. There's also an area method that returns
-the area of the square, another one that handles the print of the square.
+This module contains methods about the creation and hendling of
+SinglyLinkedList and Node objects.
 
 """
 
 
-class Square():
-    """Defines a square."""
+class Node():
+    """Defines a node of a singly linked list."""
 
-    def __init__(self, size=0, position=(0, 0)):
-        """Sets the necessary attributes for the Square object.
+    def __init__(self, data, next_node=None):
+        """Sets the necessary attributes for the Node object.
 
         Args:
-            size (int): the size of one edge of the square.
-            position (tuple): the coordinates of the square.
+            data (int): the value of the node
+            next_node (Node): the next Node
         """
-        self.size = size
-        self.position = position
+        self.data = data
+        self.next_node = next_node
+
+    @property
+    def data(self):
+        """Get or set the data value of a node."""
+        return self.__data
+
+    @data.setter
+    def data(self, value):
+        if type(value) is int:
+            self.__data = value
+        else:
+            raise TypeError("data must be an integer")
+
+    @property
+    def next_node(self):
+        """Get or set the next node of the current node."""
+        return self.__next_node
+
+    @next_node.setter
+    def next_node(self, value):
+        if type(value) is Node or value is None:
+            self.__next_node = value
+        else:
+            raise TypeError("next_node must be a Node object")
+
+
+class SinglyLinkedList():
+    """Defines a singly linked list"""
+
+    def __init__(self):
+        """Sets the necessary attributes for the SinglyLinkedList object."""
+        self.__head = None
 
     def __str__(self):
-        """Sets the print behavior of the Square object."""
-        square_str = ""
+        """Sets the print behavior of the SinglyLinkedList object."""
+        sll_str = ""
+        node = self.__head
 
-        if self.__size > 0:
-            for y in range(self.__position[1]):
-                square_str += '\n'
-            for x in range(self.__size):
-                square_str += ' ' * self.__position[0]
-                square_str += '#' * self.__size + '\n'
+        if node is not None:
+            while node is not None:
+                sll_str += str(node.data) + '\n'
+                node = node.next_node
 
-        return square_str[:-1]
+        return sll_str[:-1]
 
-    @property
-    def size(self):
-        """Get or set the size of the square."""
-        return self.__size
+    def sorted_insert(self, value):
+        node = self.__head
 
-    @size.setter
-    def size(self, value):
-        if type(value) is int:
-            if value >= 0:
-                self.__size = value
-            else:
-                raise ValueError("size must be >= 0")
+        if node is None or self.__head.data >= value:
+            self.__head = Node(value, self.__head)
         else:
-            raise TypeError("size must be an integer")
-
-    @property
-    def position(self):
-        """Get or set the position of the square."""
-        return self.__position
-
-    @position.setter
-    def position(self, value):
-        if type(value) is tuple and len(value) is 2 and \
-                type(value[0]) is int and type(value[1]) is int:
-            self.__position = value
-        else:
-            raise TypeError("position must be a tuple of 2 positive integers")
-
-    def area(self):
-        """Returns the current square area."""
-        return self.__size ** 2
-
-    def my_print(self):
-        """Prints the square with the # character on stdout."""
-        if self.__size > 0:
-            for y in range(self.__position[1]):
-                print()
-            for x in range(self.__size):
-                print(' ' * self.__position[0], end='')
-                print('#' * self.__size)
-        else:
-            print()
+            while node.next_node is not None and node.next_node.data < value:
+                node = node.next_node
+            node.next_node = Node(value, node.next_node)
