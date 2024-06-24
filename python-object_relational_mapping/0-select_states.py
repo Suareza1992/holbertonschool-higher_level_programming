@@ -1,8 +1,7 @@
-#!/usr/bin/python3
+!/usr/bin/python3
 """Lists all the states from a specified database."""
-import mysql.connector
-import sys
 import MySQLdb
+import sys
 
 if __name__ == '__main__':
     user, passwd, db_name = sys.argv[1:4]
