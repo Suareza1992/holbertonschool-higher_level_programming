@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# Lists all states from a specified database.
+"""
+    Lists all states from a specified database.
+"""
 import sys
 import MySQLdb
 
