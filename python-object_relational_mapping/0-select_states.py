@@ -5,10 +5,10 @@ import MySQLdb
 
 if __name__ == '__main__':
     user, passwd, db_name = sys.argv[1:4]
-    db = MySQLdb.connect('localhost', user, passwd, db_name, 3306)
+    db = MySQLdb.connect(user=user, password=passwd, database=db_name)
     cur = db.cursor()
     # Ready for a query.
-    cur.execute("SELECT * FROM states ORDER BY id ASC")
+    cur.execute("SELECT * FROM states ORDER BY id ASC limit 5")
     rows = cur.fetchall()
     for row in rows:
         print("({}, '{}')".format(*row))
