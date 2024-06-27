@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Lists all the states that starts with the letter 'N' from a specified databse.
+    Lists all the states that starts with the letter 'N' from a specified databse.
 """
 import sys
 import MySQLdb
@@ -13,7 +13,7 @@ if __name__ == '__main__':
     cur.execute("SELECT * FROM states WHERE name LIKE BINARY 'N%' ORDER BY id ASC")
     rows = cur.fetchall()
     for row in rows:
-        print("({}, '{}')".format(*row))
+        print(row)
     # Clean up.
     cur.close
     db.close()
