@@ -6,7 +6,7 @@ import sys
 import MySQLdb
 
 if __name__ == '__main__':
-    user, passwd, db_name, toMatch = sys.argv[1:5]
+    user, passwd, db_name, state_name = sys.argv[1:5]
     db = MySQLdb.connect(user= user, password=passwd, database=db_name)
     cur = db.cursor()
     # Query ready
