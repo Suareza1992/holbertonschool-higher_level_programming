@@ -1,20 +1,34 @@
 #!/usr/bin/python3
+
 """
-A script that takes in an argument and displays all values in the states table of a specified table where name matches the argument
-"""
-import sys
+    Connects to a MySQL database and retrieves all rows from the 'states' table
+    where the name matches the provided name parameter.
+
+    Args:
+        name (str): The name to filter the states by.
+
+    Returns:
+        None
+    """
 import MySQLdb
+import sys
 
 if __name__ == '__main__':
-    user, passwd, db_name, state_name = sys.argv[1:5]
-    db = MySQLdb.connect(user= user, password=passwd, database=db_name)
+
+    db = MySQLdb.connect(host="localhost", port=3306, user=sys.argv[1],
+                         passwd=sys.argv[2],
+                         db=sys.argv[3])
+
     cur = db.cursor()
-    # Query ready
-    cur.execute("SELECT * FROM states "
-                "WHERE BINARY name='{}' "
-                "ORDER BY id".format(state_name))
-    for row in cur.fetchall():
+
+    cur.execute(
+        "SELECT * FROM states WHERE name LIKE BINARY '{}' ORDER BY "
+        "states.id ASC".format(sys.argv[4],))
+
+    rows = cur.fetchall()
+
+    for row in rows:
         print(row)
-    # Clean up
+
     cur.close()
     db.close()
