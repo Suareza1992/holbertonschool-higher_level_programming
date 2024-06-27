@@ -10,10 +10,10 @@ if __name__ == '__main__':
     db = MySQLdb.connect(user=user, password=passwd, database=db_name)
     cur = db.cursor()
     # Query ready.
-    cur.execute("SELECT * FROM states WHERE name LIKE BINARY 'N%' COLLATE utf8_general_ci ORDER BY id ASC")
+    cur.execute("SELECT * FROM states WHERE name LIKE BINARY 'N%' ORDER BY id")
     rows = cur.fetchall()
     for row in rows:
         print(row)
     # Clean up.
-    cur.close
+    cur.close()
     db.close()
