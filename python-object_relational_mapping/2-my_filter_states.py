@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # Query ready
     cur.execute("SELECT * FROM states "
                 "WHERE BINARY name='{}' "
-                "ORDER BY id".format(toMatch))
+                "ORDER BY id".format(state_name))
     for row in cur.fetchall():
         print(row)
     # Clean up
