@@ -1,2 +1,37 @@
-VimCrypt~03!ntE`,„zZ“@@	’„– å·¾3m»Ñ|Vú„ú†‘3õRä–Ó˜»DQ˜Å:é“wÈ°¾p½ñëzÕjË1s¸ÏYŞA]ÇN-aXñ5ùóH ×£ğ“‰Ï%_Fö`hcšĞgVÿOS?· ©â7ÀĞùïjc¤^ï~øâ»0»‡÷§½ï’Ñ—™„—ïï¦Şéšf–¬ŞuR£Cşá—â3¹ÎäopîôY°şÒjvÚÆ9«·‡ÇOo€»uæù{2Õ˜\•@ß8t'Ï >²œ¦@ö,sãG›8SqM¤c¡q©’“à4¶ÏâC´¿ûğ-¾
-€‡‹‡k^åa,\ğìÓ¢.CÄÉfgf‹‚Fœÿkw¯mU;rcGè¢1¾º(qØÇß+¨™“Nº¥«ş+¶ó×”ótt¹†ÁM‚%zâˆ	œ…è•3¦—IgsÚîeÒNé'©—CÔp›õ®Sä®>)fqƒ#~C½¨7@ÖÔø:›q!'PyÇ=ù¯ç]™Å”,ô¦Útù¶.\è	ÑJ<FnÆÅwßÎ¥ÃRÊ±Z_9Ù@ CÁ:iMaŒØb¿1¼/6o¡h²3ébH"Ôr77òĞV}Í=…o‡¥P-&Ë}„LçÆ/„|Ò^<NÖJçºgÊc±Ó~‘D¢yçLózÉ;ŸøYZn­“-I¸Ê”Ÿ0>?¸å1¬a“kìÆæáœ[ğ¿\Ëßöµ¨mšì¼|¼°VC¢øB<–ÿõ«™óÕûfÇ]²Xe×Å<„¾´¨QùÃ‘HãQ£âÃ	ú ¨ß¸Ãi˜óÙ|S«‹ì³¹º™]'4´êÑæ1áà…¨}hDUİ¬›‹4“ñèMÜf#›F˜•XÁ2à-’üáá$Év/ù…×1*£a®ØFÍ9”ˆÅÏ—¢«x_€ÓØy(wğ@û67í“´ßY\¦oL%‚H/ddº@Àh]ùÉÔÓ/õ¼	ü¶+ù“OìÉ%7×QëëºJyË:hÅq¹x^FùOé4gcm ‰eœO–%R8+wBÁèìïåiyxs#)Srç‹òÅş©ywé«/\b pÿôİÙÓP2- WDB™I7yôÉÌ9ZÙ±Ó‹Wãç!õ¨>H3D6CÙé'(–afúÑ
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""
+    Deletes all State objects with a name containing the letter 'a'
+    from the database hbtn_0e_6_usa.
+"""
+import sys
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from model_state import Base, State
+
+if __name__ == "__main__":
+    # Retrieve command-line arguments
+    user, passwd, db_name = sys.argv[1:4]
+
+    # Create an engine and bind it to the metadata of the Base class
+    engine = create_engine(f'mysql+mysqldb://{user}:{passwd}@localhost/{db_name}')
+    Base.metadata.bind = engine
+
+    # Create a configured "Session" class
+    Session = sessionmaker(bind=engine)
+
+    # Create a Session
+    session = Session()
+
+    # Retrieve all states with a name containing 'a'
+    states_to_delete = session.query(State).filter(State.name.like('%a%')).all()
+
+    # Delete the states
+    for state in states_to_delete:
+        session.delete(state)
+
+    # Commit the changes
+    session.commit()
+
+    # Clean up
+    session.close()
