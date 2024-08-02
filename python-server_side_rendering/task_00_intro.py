@@ -22,6 +22,9 @@ def generate_invitations(template, attendees):
         for i in range(len(attendees)):
 
             for j, g in attendees[i].items():
+                if g is None:
+                    g = "N/A"
+                    continue
                 t1 = template.replace("{name}", attendees[i]["name"])
                 t2 = t1.replace("{event_title}", attendees[i]["event_title"])
                 t3 = t2.replace("{event_date}", attendees[i]["event_date"])
